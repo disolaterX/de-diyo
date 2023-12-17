@@ -19,7 +19,7 @@ export default function TabLayout() {
       }}
     >
       <Tabs.Screen
-        name="friends"
+        name="index"
         options={{
           title: "Friends",
           tabBarIcon: ({ color, focused }) => <FontAwesome5 name="user-astronaut" size={18} color={focused ? "blue" : "black"} />,
