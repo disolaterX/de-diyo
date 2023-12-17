@@ -3,13 +3,30 @@ import { StyleSheet } from "react-native";
 import EditScreenInfo from "../../components/EditScreenInfo";
 import { Text, View } from "../../components/Themed";
 import { useUserStore } from "../../store/user";
-import { useEffect } from "react";
+import { useCallback } from "react";
+import { useFocusEffect } from "expo-router";
 
 export default function GroupsScreen() {
-  const countFromStore = useUserStore(state => state.count);
+  const userStore = useUserStore();
+  // TODO: useFocusEffect stop doing useeffect / useCallback when the screen is not focused
+  useFocusEffect(
+    useCallback(() => {
+      console.log("Something changed in the store");
+      return () => {
+        console.log("Cleanup");
+      };
+    }, [userStore]),
+  );
+  if (!userStore._hasHydrated) {
+    return (
+      <View>
+        <Text>Loading !!!!!!!!!!!!!!!</Text>
+      </View>
+    );
+  }
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Tab Groups {countFromStore}</Text>
+      <Text style={styles.title}>Tab Groups {userStore.count}</Text>
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
       <EditScreenInfo path="app/(tabs)/two.tsx" />
     </View>
